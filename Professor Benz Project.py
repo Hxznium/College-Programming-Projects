@@ -8,14 +8,14 @@ def get_user_event():
         if not any(char.isalpha() for char in event_name):
             print("Event name must include a letter!")
             continue
-        elif event_name == "back".lower():
+        elif event_name.lower().strip() == "back":
             return False
 
         #event_day input
         while True:
             back_text()
             event_day = input("Enter the event day (1-31): ")
-            if event_day == "back".lower():
+            if event_day.lower().strip() == "back":
                 break
             else:
                 try:
@@ -31,7 +31,7 @@ def get_user_event():
             while True:
                 back_text()
                 event_month = input("Enter the event month (1-12): ")
-                if event_month == "back".lower():
+                if event_month.lower().strip() == "back":
                     break
                 else:
                     try:
@@ -46,8 +46,8 @@ def get_user_event():
                 #event_year input
                 while True:
                     back_text()
-                    event_year = input("Enter the event year (20YY): ")
-                    if event_year == "back".lower():
+                    event_year = input("Enter the event year (YYYY): ")
+                    if event_year.lower().strip() == "back":
                         break
                     else:
                         try:
@@ -91,7 +91,7 @@ def delete_event():
         back_text()
         choice = (input("Enter a number option to delete: "))
 
-        if choice == "back".strip().lower():
+        if choice.lower().strip() == "back":
             return
 
         else:
@@ -129,7 +129,7 @@ while True:
             print('1. Show all events')
             print('2. Show today event')
             user_input = input("Please select a number option: ")
-            if user_input == "back".strip().lower():
+            if user_input.lower().strip() == "back":
                 break
             elif user_input == "1":
                 show_events()
