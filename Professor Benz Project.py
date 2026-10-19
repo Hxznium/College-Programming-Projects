@@ -1,6 +1,4 @@
 from datetime import date
-from random import choice
-
 
 def get_user_event():
     #event_name input
@@ -11,7 +9,7 @@ def get_user_event():
             print("Event name must include a letter!")
             continue
         elif event_name == "back".lower():
-            return
+            return False
 
         #event_day input
         while True:
@@ -54,7 +52,7 @@ def get_user_event():
                     else:
                         try:
                             event_year = int(event_year)
-                            if date(event_year, event_month, event_day) <= date.today():
+                            if date(event_year, event_month, event_day) < date.today():
                                 print("You can't make an event in the past.")
                                 continue
                         except ValueError:
@@ -65,18 +63,29 @@ def get_user_event():
 def sort_events(events):
     return sorted(events, key=lambda e: e["date"])  # nearest -> farthest
 
-
 def show_events():
     print("List of events: \n")
-    for number, e in enumerate(sort_events(events), start=1):
+    for number, e in enumerate((events), start=1):
         print(f"{number}. {e['name']} on {e['date'].strftime('%B %d, %Y')}")
+
+def show_event_today():
+    today = date.today()
+    today_events = [e for e in events if e["date"] == today]
+
+    print("Today's events:\n")
+
+    for number, e in enumerate(today_events, start=1):
+        print(f"{number}. {e['name']} on {e['date'].strftime('%B %d, %Y')}")
+
+    if not today_events:
+        print('There is no event today!')
 
 def back_text():
     print('\nEnter "back" to go back')
 
 def delete_event():
     while True:
-        for number, e in enumerate(sort_events(events), start=1):
+        for number, e in enumerate(events, start=1):
             print(f"{number}. {e['name']} on {e['date'].strftime('%B %d, %Y')}")
 
         back_text()
@@ -96,15 +105,18 @@ def delete_event():
             print("Invalid number. Try again.")
             continue
 
-        deleted_event = events.pop(choice - 1)
-        print(f"Event [{e['name']}] is deleted!")
+        delete_event = events[choice - 1]
+        events.remove(delete_event)
+        print(f"Event [{delete_event['name']}] is deleted!")
         return
     #2 already made events
 events = [
-    {"name": "Birthday", "date": date(2026, 10, 15)},
-    {"name": "Concert", "date": date(2026, 12, 25)},
+    {"name": "Exam", "date": date(2026, 11, 5)},
+    {"name": "Birthday", "date": date(2026, 11, 25)},
+    {"name": "Concert", "date": date(2026, 12, 10)},
 ]
-
+print('This is NOWN')
+print('Welcome to our system program application!')
 while True:
     print('\nPlease select a number option:')
     print('1. Show events')
@@ -112,9 +124,27 @@ while True:
     print('3. Delete event')
     user_input = input('')
     if user_input == "1":
-        show_events()
+        while True:
+            back_text()
+            print('1. Show all events')
+            print('2. Show today event')
+            user_input = input("Please select a number option: ")
+            if user_input == "back".strip().lower():
+                break
+            elif user_input == "1":
+                show_events()
+                break
+            elif user_input == "2":
+                show_event_today()
+                break
+            else:
+                print("Invalid option, Please enter a number!")
+                continue
     elif user_input == "2":
-        events.append(get_user_event())
+        new_event = get_user_event()
+
+        if new_event is not False:
+            events.append(new_event)
     elif user_input == "3":
         delete_event()
     else:
