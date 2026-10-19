@@ -115,7 +115,7 @@ events = [
     {"name": "Birthday", "date": date(2026, 11, 25)},
     {"name": "Concert", "date": date(2026, 12, 10)},
 ]
-print('This is NOWN')
+print('This is -- NOWN ---')
 print('Welcome to our system program application!')
 while True:
     print('\nPlease select a number option:')
