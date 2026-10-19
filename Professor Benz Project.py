@@ -4,18 +4,19 @@ def get_user_event():
     #event_name input
     while True:
         back_text()
-        event_name = input("Enter the name of the event: ").strip()
+        event_name = input("Enter the name of the event: ").strip().capitalize()
+        if event_name.lower() == "back":
+            return False
+
         if not any(char.isalpha() for char in event_name):
             print("Event name must include a letter!")
             continue
-        elif event_name.lower().strip() == "back":
-            return False
 
         #event_day input
         while True:
             back_text()
             event_day = input("Enter the event day (1-31): ")
-            if event_day.lower().strip() == "back":
+            if event_day.lower() == "back":
                 break
             else:
                 try:
@@ -30,8 +31,8 @@ def get_user_event():
             #event_month input
             while True:
                 back_text()
-                event_month = input("Enter the event month (1-12): ")
-                if event_month.lower().strip() == "back":
+                event_month = input("Enter the event month (1-12): ").strip()
+                if event_month.lower() == "back":
                     break
                 else:
                     try:
@@ -46,8 +47,8 @@ def get_user_event():
                 #event_year input
                 while True:
                     back_text()
-                    event_year = input("Enter the event year (YYYY): ")
-                    if event_year.lower().strip() == "back":
+                    event_year = input("Enter the event year (YYYY): ").strip()
+                    if event_year.lower() == "back":
                         break
                     else:
                         try:
@@ -58,6 +59,8 @@ def get_user_event():
                         except ValueError:
                             print("Hmm, that date doesn't look right. Please enter a number or a correct [DD/MM/YYYY]")
                             continue
+
+                    print(f'[{event_name}] on ({date(event_year, event_month, event_day).strftime('%B %d, %Y')} has been added.)')
                     return {"name": event_name, "date": date(event_year, event_month, event_day)}
 
 def sort_events(events):
@@ -65,8 +68,8 @@ def sort_events(events):
 
 def show_events():
     print("List of events: \n")
-    for number, e in enumerate((events), start=1):
-        print(f"{number}. {e['name']} on {e['date'].strftime('%B %d, %Y')}")
+    for number, e in enumerate(events, start=1):
+        print(f"{number}. [{e['name']}] on ({e['date'].strftime('%B %d, %Y')})")
 
 def show_event_today():
     today = date.today()
@@ -75,7 +78,7 @@ def show_event_today():
     print("Today's events:\n")
 
     for number, e in enumerate(today_events, start=1):
-        print(f"{number}. {e['name']} on {e['date'].strftime('%B %d, %Y')}")
+        print(f"{number}. [{e['name']}] on ({e['date'].strftime('%B %d, %Y')})")
 
     if not today_events:
         print('There is no event today!')
@@ -86,7 +89,7 @@ def back_text():
 def delete_event():
     while True:
         for number, e in enumerate(events, start=1):
-            print(f"{number}. {e['name']} on {e['date'].strftime('%B %d, %Y')}")
+            print(f"{number}. [{e['name']}] on ({e['date'].strftime('%B %d, %Y')})")
 
         back_text()
         choice = (input("Enter a number option to delete: "))
@@ -122,6 +125,7 @@ while True:
     print('1. Show events')
     print('2. Add event')
     print('3. Delete event')
+    print('4. Exit program')
     user_input = input('')
     if user_input == "1":
         while True:
@@ -142,10 +146,11 @@ while True:
                 continue
     elif user_input == "2":
         new_event = get_user_event()
-
         if new_event is not False:
             events.append(new_event)
     elif user_input == "3":
         delete_event()
+    elif user_input == "4":
+        break
     else:
         print("Invalid option, Please enter a number!")
