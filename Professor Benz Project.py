@@ -140,7 +140,7 @@ def search_event():
                 print(f'{num}. {name["name"]}')
             print('0', '-' * 25, '0')
         else:
-            print("No events with that name found.")
+            print("\nNo events with that name found.")
 
 
     #2 already made events
@@ -169,7 +169,6 @@ while True:
                 break
             elif user_input == "1":
                 show_events()
-                break
             elif user_input == "2":
                 show_event_today()
                 break
