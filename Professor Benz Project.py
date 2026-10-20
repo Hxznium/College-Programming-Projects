@@ -68,8 +68,10 @@ def sort_events(events):
 
 def show_events():
     print("List of events: \n")
+    print('0', '='*60, '0')
     for number, e in enumerate(events, start=1):
         print(f"{number}. [{e['name']}] on ({e['date'].strftime('%B %d, %Y')})")
+    print('0', '='*60, '0')
 
 def show_event_today():
     today = date.today()
@@ -88,15 +90,15 @@ def back_text():
 
 def delete_event():
     while True:
+        print('0', '=' * 60, '0')
         for number, e in enumerate(events, start=1):
             print(f"{number}. [{e['name']}] on ({e['date'].strftime('%B %d, %Y')})")
+        print('0', '=' * 60, '0')
 
         back_text()
         choice = (input("Enter a number option to delete: "))
-
         if choice.lower().strip() == "back":
             return
-
         else:
             try:
                 choice = int(choice)
@@ -109,9 +111,38 @@ def delete_event():
             continue
 
         delete_event = events[choice - 1]
+
+        confirm = input(f"Are you sure to delete [{delete_event['name']}]? (y/n): ").lower().strip()
+        if confirm == "y":
+            pass
+        elif confirm == "n":
+            continue
+
         events.remove(delete_event)
-        print(f"Event [{delete_event['name']}] is deleted!")
+        print(f"\nEvent [{delete_event['name']}] is deleted!")
         return
+
+def search_event():
+    while True:
+        back_text()
+        find_name = input("Enter the name of the event: ").strip()
+        if find_name.lower() == "back":
+            return
+        else:
+            name_list = [
+                (num, event) for num, event in enumerate(events, start=1)
+                if event["name"].lower().startswith(find_name.lower())
+            ]
+
+        if name_list:
+            print('\n0', '-' * 25, '0')
+            for num, name in name_list:
+                print(f'{num}. {name["name"]}')
+            print('0', '-' * 25, '0')
+        else:
+            print("No events with that name found.")
+
+
     #2 already made events
 events = [
     {"name": "Exam", "date": date(2026, 11, 5)},
@@ -132,6 +163,7 @@ while True:
             back_text()
             print('1. Show all events')
             print('2. Show today event')
+            print('3. Search event')
             user_input = input("Please select a number option: ")
             if user_input.lower().strip() == "back":
                 break
@@ -141,6 +173,9 @@ while True:
             elif user_input == "2":
                 show_event_today()
                 break
+            elif user_input == "3":
+                search_event()
+                break
             else:
                 print("Invalid option, Please enter a number!")
                 continue
@@ -148,6 +183,7 @@ while True:
         new_event = get_user_event()
         if new_event is not False:
             events.append(new_event)
+            sort_events(events)
     elif user_input == "3":
         delete_event()
     elif user_input == "4":
